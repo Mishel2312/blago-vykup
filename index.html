@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Продати техніку — драфт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#c40000; --red-dark:#a30000; --bg:#e2e8eb; --card:#fff; --field:#e9eef1;
+  --field-border:#5d6166; --ink:#1f2328; --muted:#5f6670; --soft:#9aa1a8;
+  --dark:#2b2b35; --green:#0b6b3a; --amber:#f39c12; --radius:24px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Onest",system-ui,sans-serif;font-size:16px;line-height:1.4}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+
+/* top bar */
+.top{background:var(--card);border-radius:0 0 32px 32px;padding:20px 40px;display:flex;align-items:center;gap:24px;max-width:1440px;margin:0 auto}
+.logo{display:inline-block;border:3px solid var(--red);border-radius:18px;padding:2px 12px;color:var(--red);font-weight:800;font-size:26px;letter-spacing:.5px;line-height:1.2;text-decoration:none}
+.top .tag{color:var(--muted);font-weight:500}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:22px;color:var(--red)}
+.top-right svg{width:28px;height:28px}
+.top-phone{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:18px}
+.top-phone small{display:block;font-weight:500;font-size:13px;color:var(--muted)}
+
+.wrap{max-width:1440px;margin:0 auto;padding:32px 40px 80px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:8px 0 24px}
+.head h1{font-size:36px;font-weight:800;margin:0;line-height:1.15}
+.head p{margin:8px 0 0;color:var(--muted);font-size:18px}
+.steps{display:flex;background:var(--card);border-radius:14px;padding:6px;gap:4px;flex:none}
+.steps button{border:0;background:none;padding:10px 16px;border-radius:10px;font-weight:700;font-size:14px;text-transform:uppercase;color:#6b7178;display:flex;gap:8px;align-items:center;cursor:not-allowed}
+.steps button i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#d6dde1;color:#fff;font-size:12px}
+.steps button.on{background:var(--red);color:#fff;cursor:default}
+.steps button.on i{background:#fff;color:var(--red)}
+.steps button.done{cursor:pointer;color:var(--ink)}
+.steps button.done:hover{background:var(--field)}
+.steps button.done i{background:var(--green)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.grid>*{min-width:0}
+.card{background:var(--card);border-radius:var(--radius);padding:44px 50px}
+.card+.card{margin-top:24px}
+.card h2{font-size:24px;font-weight:700;margin:0 0 4px}
+.card .sub{color:var(--muted);margin:0 0 32px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:28px 26px}
+.f label{display:block;font-weight:500;margin-bottom:10px}
+.f label em{color:var(--red);font-style:normal}
+.f.disabled label{color:var(--soft)}
+.sel,.inp{width:100%;appearance:none;border:2px solid var(--field-border);background:var(--field);border-radius:14px;padding:18px 52px 18px 24px;font-weight:600;font-size:17px;color:#4a4f55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%231f2328' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M4 7l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 20px center}
+.inp{background-image:none;padding-right:24px}
+.sel:disabled{border-color:#dfe5e8;color:var(--soft);background-color:#f1f4f6;opacity:1}
+.sel:focus,.inp:focus{outline:3px solid rgba(196,0,0,.25);outline-offset:1px}
+.hint{font-size:15px;margin-top:8px;color:var(--muted)}
+.hint a,.link{color:var(--red);font-weight:600}
+
+.f.full{grid-column:1/-1}
+.types{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.t{border:2px solid #dfe5e8;background:#fff;border-radius:18px;padding:16px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font-weight:600;font-size:15px;text-align:center;line-height:1.2}
+.t:hover{border-color:#b9c2c7}
+.t svg{width:40px;height:40px;color:#5b6168}
+.t.on{border-color:var(--red);box-shadow:0 0 0 3px rgba(196,0,0,.12);color:var(--red)}
+.t.on svg{color:var(--red)}
+.photo{margin-top:32px;border:2px dashed #c7cfd4;border-radius:18px;padding:22px 24px;display:flex;align-items:center;gap:18px;cursor:pointer}
+.photo:hover{border-color:var(--red)}
+.photo svg{width:36px;height:36px;color:var(--red);flex:none}
+.photo b{display:block}
+.photo small{color:var(--muted)}
+.photo input{display:none}
+.thumbs{display:flex;gap:8px;margin-left:auto}
+.thumbs img{width:48px;height:48px;object-fit:cover;border-radius:10px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;border:0;border-radius:16px;padding:22px;font-weight:800;font-size:18px;text-transform:uppercase;cursor:pointer;background:var(--red);color:#fff;text-decoration:none}
+.btn:hover{background:var(--red-dark)}
+.btn:disabled{background:#a7a9ae;cursor:not-allowed}
+.btn.dark{background:var(--dark)}
+.btn.ghost{background:var(--field);color:var(--ink)}
+.btn.ghost:hover{background:#dce3e7}
+.btn svg{width:24px;height:24px}
+.mt{margin-top:36px}
+
+/* price */
+.price{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid #e3e8eb;border-bottom:2px solid #e3e8eb;padding:24px 0;margin:8px 0 18px}
+.price div small{display:block;color:var(--muted);font-size:17px}
+.price div strong{font-size:26px;font-weight:600}
+.price .main-v strong{color:var(--red)}
+.note{display:flex;gap:12px;background:#fff6e5;border-radius:14px;padding:14px 18px;font-size:15px;color:#6a4b00}
+.note svg{flex:none;width:22px;height:22px}
+.note.green{background:#eef6f1;color:#0b4d2b}
+
+/* method cards */
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.m{position:relative;border:2px solid #dfe5e8;border-radius:20px;padding:26px 26px 24px;cursor:pointer;display:flex;flex-direction:column;gap:10px;background:#fff;text-align:left;width:100%}
+.m:hover{border-color:var(--red)}
+.m.on{border-color:var(--red);box-shadow:0 0 0 3px rgba(196,0,0,.12)}
+.m .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--field)}
+.m .ic svg{width:30px;height:30px}
+.m h3{margin:4px 0 0;font-size:20px}
+.m p{margin:0;color:var(--muted)}
+.m .pill{position:absolute;top:22px;right:22px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:8px}
+.pill{font-size:13px;font-weight:700;padding:4px 10px;border-radius:8px;display:inline-block}
+.pill.green{background:var(--green);color:#fff}
+.pill.amber{background:var(--amber);color:#fff}
+.m ul{margin:6px 0 0;padding-left:18px;color:var(--ink);font-size:15px}
+.m .go{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;font-weight:800;text-transform:uppercase;font-size:15px;color:var(--red)}
+.m .go span.arr{width:44px;height:44px;border-radius:12px;background:var(--field);display:grid;place-items:center;color:var(--ink);transition:transform .15s}
+.m:hover .go span.arr{transform:translateX(4px);background:var(--red);color:#fff}
+.m .go svg{width:20px;height:20px}
+
+/* post page */
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--red);font-weight:700;text-decoration:none;margin-bottom:20px;cursor:pointer;background:none;border:0;padding:0}
+.post-hero{display:flex;align-items:center;gap:20px;margin-bottom:8px}
+.post-hero .ic{width:64px;height:64px;border-radius:18px;background:var(--field);display:grid;place-items:center;flex:none}
+.post-hero .ic svg{width:38px;height:38px}
+.post-hero h2{font-size:28px!important}
+.post-hero .pill{margin-left:auto;align-self:flex-start}
+.mini-price{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;background:var(--field);border-radius:16px;padding:16px 22px;margin:24px 0 8px}
+.mini-price b{color:var(--red);font-size:22px}
+.mini-price small{color:var(--muted)}
+.mini-price a{margin-left:auto;color:var(--red);font-weight:600;cursor:pointer}
+.h3{font-size:20px;font-weight:700;margin:40px 0 18px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;position:relative}
+.timeline:before{content:"";position:absolute;left:10%;right:10%;top:27px;height:2px;background:#e3e8eb}
+.timeline li{position:relative;text-align:center;padding:0 4px}
+.timeline .n{width:56px;height:56px;margin:0 auto 12px;border-radius:50%;background:#fff;border:2px solid var(--red);display:grid;place-items:center;color:var(--red);position:relative}
+.timeline .n svg{width:26px;height:26px}
+.timeline b{display:block;font-size:16px;margin-bottom:4px}
+.timeline small{color:var(--muted);font-size:14px;display:block}
+.timeline .day{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--green);background:#e6f3ec;border-radius:6px;padding:2px 8px}
+.perks{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.perk{display:flex;gap:14px;padding:18px 20px;border:2px solid #edf1f3;border-radius:18px}
+.perk svg{width:28px;height:28px;color:var(--green);flex:none}
+.perk b{display:block}
+.perk small{color:var(--muted)}
+.prep{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;list-style:none;margin:0;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start}
+.prep li:before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:6px;background:var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7'/%3E%3C/svg%3E") center/16px no-repeat}
+.faq details{border-bottom:2px solid #edf1f3;padding:18px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-size:24px;line-height:1;color:var(--red);font-weight:500}
+.faq details[open] summary:after{content:"–"}
+.faq p{margin:10px 0 0;color:var(--muted)}
+
+.check{display:flex;gap:12px;align-items:flex-start;margin-top:24px;font-size:15px;color:var(--muted);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--red);margin:1px 0 0;flex:none}
+
+/* aside */
+.aside{display:flex;flex-direction:column;gap:24px;position:sticky;top:20px}
+.aside .card{padding:28px}
+.aside h4{margin:0 0 16px;font-size:18px}
+.how{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.how li{display:flex;gap:14px}
+.how li span{flex:none;width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.how li b{display:block}
+.how li small{color:var(--muted)}
+.trust{background:var(--dark);color:#fff;border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:16px}
+.trust div{display:flex;gap:12px}
+.trust svg{width:24px;height:24px;flex:none;color:#ff6b6b}
+.trust b{display:block}
+.trust small{color:#c9ccd3}
+
+/* success */
+.done{text-align:center;padding:56px 50px}
+.done .big{width:84px;height:84px;margin:0 auto 20px;border-radius:50%;display:grid;place-items:center;background:#e6f3ec;color:var(--green)}
+.done .big svg{width:44px;height:44px}
+.done h2{font-size:28px}
+.done p{max-width:560px;margin:8px auto;color:var(--muted)}
+.summary{max-width:560px;margin:28px auto 0;text-align:left;background:var(--field);border-radius:18px;padding:20px 24px;display:grid;grid-template-columns:1fr auto;gap:10px 16px}
+.summary small{color:var(--muted)}
+.summary b{text-align:right}
+.badge{display:inline-block;background:var(--green);color:#fff;font-weight:700;padding:4px 12px;border-radius:8px;font-size:15px}
+.badge.amber{background:var(--amber)}
+.done .row{display:flex;gap:16px;max-width:560px;margin:28px auto 0}
+.hidden{display:none!important}
+
+/* notes for devs */
+.dev-toggle{position:fixed;right:112px;bottom:38px;z-index:20;background:#111;color:#fff;border:0;border-radius:999px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer}
+.dev{position:fixed;right:16px;bottom:110px;z-index:20;width:min(460px,calc(100vw - 32px));max-height:70vh;overflow:auto;background:#111;color:#e8e8e8;border-radius:16px;padding:20px 22px;font-size:14px;line-height:1.5;display:none}
+.dev.show{display:block}
+.dev h5{margin:14px 0 6px;font-size:14px;color:#ffcf66}
+.dev h5:first-child{margin-top:0}
+.dev code{background:#2a2a2a;padding:1px 6px;border-radius:5px;font-size:13px}
+.dev ul{margin:0;padding-left:18px}
+.log{margin-top:8px;background:#000;border-radius:10px;padding:10px;font-family:ui-monospace,monospace;font-size:12px;max-height:160px;overflow:auto;color:#7ee787;white-space:pre-wrap}
+.chat{position:fixed;right:22px;bottom:22px;width:70px;height:70px;border-radius:18px;background:var(--red);display:grid;place-items:center;box-shadow:0 6px 20px rgba(196,0,0,.35)}
+.chat svg{width:32px;height:32px;color:#fff}
+
+/* responsive */
+@media (max-width:1200px){
+  .types{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:1fr}
+  .aside{position:static;display:grid;grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr;gap:16px}
+  .timeline:before{left:27px;right:auto;top:10px;bottom:10px;width:2px;height:auto}
+  .timeline li{display:grid;grid-template-columns:56px 1fr;gap:4px 16px;text-align:left;padding:0}
+  .timeline .n{margin:0;grid-row:span 3}
+  .timeline .day{justify-self:start;margin-top:4px}
+}
+@media (max-width:900px){
+  .top{padding:14px 16px;border-radius:0 0 22px 22px;gap:12px}
+  .top .tag,.top-phone small{display:none}
+  .top-phone{font-size:15px}
+  .logo{font-size:22px}
+  .wrap{padding:20px 16px 120px}
+  .head{flex-direction:column;align-items:flex-start}
+  .head h1{font-size:28px}
+  .head p{font-size:16px}
+  .steps{width:100%;overflow-x:auto}
+  .steps button{font-size:12px;padding:8px 10px;white-space:nowrap}
+  .card{padding:24px 18px;border-radius:20px}
+  .fields,.methods,.perks,.prep{grid-template-columns:1fr;gap:18px}
+  .types{grid-template-columns:repeat(3,1fr);gap:8px}
+  .t{font-size:13px;padding:12px 4px}
+  .t svg{width:32px;height:32px}
+  .prep{gap:10px}
+  .price{grid-template-columns:1fr;gap:12px}
+  .aside{grid-template-columns:1fr}
+  .post-hero{flex-wrap:wrap}
+  .post-hero h2{font-size:22px!important}
+  .done{padding:36px 18px}
+  .done .row{flex-direction:column}
+  .chat{width:56px;height:56px;right:16px;bottom:16px}
+  .dev-toggle{right:84px;bottom:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Top bar (без меню кабинета: страница для новых клиентов) ===== -->
+<header class="top">
+  <a class="logo" href="#">БЛАГО</a>
+  <span class="tag">Викуп техніки</span>
+  <div class="top-right">
+    <a class="top-phone" href="tel:0800000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="color:var(--red)"><path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/><path d="M15 3a6 6 0 0 1 6 6M15 7a2 2 0 0 1 2 2"/></svg><span>0 800 000 000<small>Безкоштовно по Україні</small></span></a>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Доступність"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="6.5" r="1.8" fill="#fff"/><path d="M7 9.5h10M12 9.5v4.5m0 0-3 4.5m3-4.5 3 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1 id="title">Продайте техніку вигідно</h1>
+      <p id="subtitle">Онлайн-оцінка за 1 хвилину · у відділенні або Новою поштою</p>
+    </div>
+    <div class="steps" id="steps">
+      <button data-s="1" class="on"><i>1</i>Оцінка</button>
+      <button data-s="2"><i>2</i>Спосіб</button>
+      <button data-s="3"><i>3</i>Заявка</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div id="flow">
+
+      <!-- STEP 1: оценка -->
+      <section class="card" id="step1">
+        <h2>Онлайн-оцінка</h2>
+        <p class="sub">Вкажіть тип техніки, модель і стан — покажемо попередню ціну</p>
+
+        <div class="fields">
+          <div class="f full">
+            <label>Тип техніки <em>*</em></label>
+            <div class="types" id="types"></div>
+          </div>
+          <div class="f disabled" id="f-brand">
+            <label for="brand">Бренд <em>*</em></label>
+            <select class="sel" id="brand" disabled><option value="">Оберіть бренд</option></select>
+            <div class="hint">Не знайшли свою модель? <a href="#">Напишіть нам</a></div>
+          </div>
+          <div class="f disabled" id="f-model">
+            <label for="model">Модель <em>*</em></label>
+            <select class="sel" id="model" disabled><option value="">Оберіть модель</option></select>
+          </div>
+          <div class="f disabled" id="f-mem">
+            <label for="mem"><span id="memLabel">Характеристики</span> <em>*</em></label>
+            <select class="sel" id="mem" disabled><option value="">Оберіть варіант</option></select>
+          </div>
+          <div class="f">
+            <label for="cond">Стан <em>*</em></label>
+            <select class="sel" id="cond">
+              <option value="">Вкажіть стан виробу</option>
+              <option value="1">Відмінний — як новий, без слідів використання</option>
+              <option value="0.85">Добрий — незначні сліди використання</option>
+              <option value="0.65">Задовільний — подряпини, сколи</option>
+              <option value="0.3">На запчастини — не вмикається / розбитий</option>
+            </select>
+            <div class="hint"><a href="#">Як оцінити стан виробу?</a></div>
+          </div>
+        </div>
+
+        <label class="photo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+          <span><b>Додайте фото техніки</b><small>Необов'язково, але оцінка буде точнішою · до 4 фото</small></span>
+          <input type="file" id="photos" accept="image/*" multiple>
+          <span class="thumbs" id="thumbs"></span>
+        </label>
+
+        <button class="btn dark mt" id="calc" disabled>
+          <svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="10" cy="7" rx="6" ry="3"/><path d="M4 7v4c0 1.7 2.7 3 6 3s6-1.3 6-3V7M4 11v4c0 1.7 2.7 3 6 3"/><rect x="14" y="12" width="8" height="10" rx="2"/></svg>
+          Розрахувати вартість
+        </button>
+      </section>
+
+      <!-- STEP 2: результат + выбор способа -->
+      <section class="card hidden" id="step2">
+        <h2 id="devName">—</h2>
+        <p class="sub">Попередня оцінка вашої техніки</p>
+
+        <div class="price">
+          <div class="main-v"><small>Попередня ціна</small><strong id="pMain">—</strong></div>
+          <div><small>Діапазон</small><strong id="pRange">—</strong></div>
+          <div><small>Оцінка дійсна до</small><strong id="pDate">—</strong></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v6M12 17h.01"/></svg>
+          <span>Остаточна ціна визначається після діагностики. Якщо стан відповідає вказаному — ціна не зміниться.</span>
+        </div>
+
+        <h2 style="font-size:20px;margin-top:36px">Як вам зручніше продати?</h2>
+        <p class="sub" style="margin-bottom:20px">Оберіть спосіб, щоб продовжити</p>
+
+        <div class="methods">
+          <button class="m" id="m-office" type="button">
+            <span class="pill green" style="position:absolute;top:22px;right:22px">Гроші одразу</span>
+            <span class="ic"><svg viewBox="0 0 48 48"><path d="M24 3c9 0 16 6 16 15 0 10-11 20-16 27C19 38 8 28 8 18 8 9 15 3 24 3z" fill="#c40000"/><text x="24" y="25" text-anchor="middle" font-family="Onest,sans-serif" font-weight="800" font-size="17" fill="#fff">Б</text></svg></span>
+            <h3>Принести у відділення</h3>
+            <p>Діагностика за 10 хвилин і гроші готівкою або на картку</p>
+            <ul><li>Відділення у вашому місті</li><li>Потрібен паспорт або ID-картка</li></ul>
+            <span class="go">Обрати відділення<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+          </button>
+          <button class="m" id="m-post" type="button">
+            <span class="pill amber" style="position:absolute;top:22px;right:22px">Незабаром</span>
+            <span class="ic"><svg viewBox="0 0 48 48" fill="#e2231a"><path d="M24 4l7 7h-4v6h-6v-6h-4zM24 44l-7-7h4v-6h6v6h4zM4 24l7-7v4h6v6h-6v4zM44 24l-7 7v-4h-6v-6h6v-4z"/></svg></span>
+            <h3>Відправити Новою поштою</h3>
+            <p>Без поїздок: відправте техніку, отримайте гроші на картку за 3–5 днів</p>
+            <ul><li>З будь-якого міста України</li><li>Не погодились з ціною — повернемо</li></ul>
+            <span class="go">Як це працює<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 2a: ОТДЕЛЕНИЕ -->
+      <section class="card hidden" id="office">
+        <button class="back" data-to="step2">← Інші способи</button>
+        <div class="post-hero">
+          <span class="ic"><svg viewBox="0 0 48 48"><path d="M24 3c9 0 16 6 16 15 0 10-11 20-16 27C19 38 8 28 8 18 8 9 15 3 24 3z" fill="#c40000"/><text x="24" y="25" text-anchor="middle" font-family="Onest,sans-serif" font-weight="800" font-size="17" fill="#fff">Б</text></svg></span>
+          <div><h2>Продаж у відділенні</h2><p class="sub" style="margin:0">Оберіть зручне відділення — ми зафіксуємо оцінку</p></div>
+        </div>
+        <div class="mini-price"><small>Попередня ціна</small><b class="mp-price">—</b><small class="mp-dev"></small><a data-to="step1">Змінити</a></div>
+        <div class="fields mt">
+          <div class="f"><label for="oCity">Місто <em>*</em></label>
+            <select class="sel" id="oCity"><option>Київ</option><option>Дніпро</option><option>Одеса</option><option>Харків</option><option>Львів</option><option>Кривий Ріг</option></select></div>
+          <div class="f"><label for="oBranch">Відділення «Благо» <em>*</em></label>
+            <select class="sel" id="oBranch"><option>вул. Хрещатик, 15</option><option>просп. Перемоги, 42</option><option>вул. Велика Васильківська, 100</option></select></div>
+        </div>
+        <button class="btn mt" data-method="office">Записатися у відділення</button>
+      </section>
+
+      <!-- STEP 2b: НОВА ПОШТА — отдельная страница -->
+      <section class="card hidden" id="post">
+        <button class="back" data-to="step2">← Інші способи</button>
+        <div class="post-hero">
+          <span class="ic"><svg viewBox="0 0 48 48" fill="#e2231a"><path d="M24 4l7 7h-4v6h-6v-6h-4zM24 44l-7-7h4v-6h6v6h4zM4 24l7-7v4h6v6h-6v4zM44 24l-7 7v-4h-6v-6h6v-4z"/></svg></span>
+          <div><h2>Продаж Новою поштою</h2><p class="sub" style="margin:0">Без поїздок у відділення — з будь-якого міста України</p></div>
+          <span class="pill amber">Незабаром</span>
+        </div>
+
+        <div class="mini-price"><small>Ваша попередня ціна</small><b class="mp-price">—</b><small class="mp-dev"></small><a data-to="step1">Змінити</a></div>
+
+        <div class="note green" style="margin-top:16px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg>
+          <span>Сервіс запускається найближчим часом. Залиште заявку — ми зафіксуємо оцінку і першими повідомимо вас про запуск.</span>
+        </div>
+
+        <div class="h3">Як це працює</div>
+        <ol class="timeline">
+          <li><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><b>Заявка</b><small>Залишаєте заявку з попередньою ціною</small><span class="day">День 1</span></li>
+          <li><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></span><b>Відправка</b><small>Надсилаємо ТТН — ви відправляєте техніку, доставка за наш рахунок</small><span class="day">День 1–2</span></li>
+          <li><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><b>Діагностика</b><small>Перевіряємо стан і надсилаємо фотозвіт</small><span class="day">День 2–4</span></li>
+          <li><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Підтвердження</b><small>Погоджуєте фінальну ціну в SMS або Viber</small><span class="day">День 3–4</span></li>
+          <li><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></span><b>Гроші на картку</b><small>Зарахування на картку будь-якого банку</small><span class="day">День 3–5</span></li>
+        </ol>
+
+        <div class="h3">Ваші гарантії</div>
+        <div class="perks">
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/></svg><div><b>Безкоштовна доставка</b><small>В обидва боки, якщо угода не відбулась</small></div></div>
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><div><b>Посилка застрахована</b><small>На суму попередньої оцінки</small></div></div>
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg><div><b>Фотозвіт діагностики</b><small>Бачите все, що ми перевірили</small></div></div>
+          <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><div><b>Не погодились — повернемо</b><small>Техніка повернеться вам протягом 2 днів</small></div></div>
+        </div>
+
+        <div class="h3">Перед відправкою</div>
+        <ul class="prep">
+          <li>Вийдіть з облікових записів (iCloud, Google, Microsoft)</li>
+          <li>Збережіть резервну копію даних</li>
+          <li>Скиньте налаштування до заводських</li>
+          <li>Вийміть SIM-картку, карту пам'яті, диски</li>
+          <li>Додайте зарядний пристрій, якщо є</li>
+          <li>Надійно запакуйте (оригінальна коробка або плівка)</li>
+        </ul>
+
+        <div class="h3">Часті запитання</div>
+        <div class="faq">
+          <details><summary>А якщо фінальна ціна буде нижчою?</summary><p>Ми покажемо фотозвіт і пояснимо, що вплинуло на ціну. Якщо не погодитесь — повернемо техніку безкоштовно.</p></details>
+          <details><summary>Яку техніку можна відправити поштою?</summary><p>Смартфони, ноутбуки, планшети, консолі, фото- та аудіотехніку. Телевізори та велику техніку — лише у відділенні.</p></details>
+          <details><summary>Чи потрібен паспорт?</summary><p>Так, для оформлення договору знадобиться підтвердження особи онлайн. Детальні вимоги повідомимо після запуску сервісу.</p></details>
+          <details><summary>Що буде з моїми даними на пристрої?</summary><p>Перед відправкою скиньте налаштування. Після надходження ми додатково видаляємо всі дані з пристрою.</p></details>
+          <details><summary>Коли сервіс запрацює?</summary><p>Найближчим часом. Залиште заявку — ми надішлемо SMS у день запуску, а ваша оцінка буде зафіксована.</p></details>
+        </div>
+
+        <div class="h3">Залишити заявку</div>
+        <div class="fields">
+          <div class="f"><label for="pCity">Ваше місто <em>*</em></label>
+            <select class="sel" id="pCity"><option>Київ</option><option>Біла Церква</option><option>Житомир</option><option>Полтава</option><option>Черкаси</option><option>Інше місто</option></select></div>
+          <div class="f"><label for="pNp">Відділення «Нова пошта»</label>
+            <select class="sel" id="pNp"><option>Відділення №1</option><option>Відділення №12</option><option>Поштомат №3045</option></select></div>
+        </div>
+        <button class="btn mt" data-method="post">Залишити заявку</button>
+        <p class="hint" style="text-align:center">Не хочете чекати? <a href="#" data-to="office">Продайте у відділенні вже сьогодні</a></p>
+      </section>
+
+      <!-- STEP 3: контакты -->
+      <section class="card hidden" id="step3">
+        <button class="back" id="back3">← Назад</button>
+        <h2>Контактні дані</h2>
+        <p class="sub" id="s3sub">Менеджер зв'яжеться з вами, щоб підтвердити заявку</p>
+        <div class="fields">
+          <div class="f"><label for="name">Ім'я <em>*</em></label><input class="inp" id="name" placeholder="Ваше ім'я" autocomplete="given-name"></div>
+          <div class="f"><label for="phone">Телефон <em>*</em></label><input class="inp" id="phone" placeholder="+380 __ ___ __ __" inputmode="tel" autocomplete="tel"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="agree"> Погоджуюсь з умовами обробки персональних даних та правилами сервісу</label>
+        <button class="btn mt" id="submit" disabled>Надіслати заявку</button>
+      </section>
+
+      <!-- SUCCESS -->
+      <section class="card done hidden" id="done">
+        <div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2 id="dTitle">Заявку прийнято!</h2>
+        <p id="dText"></p>
+        <div class="summary" id="dSum"></div>
+        <div class="row">
+          <button class="btn ghost hidden" id="toOffice">Продати у відділенні</button>
+          <button class="btn dark" id="again">Оцінити ще щось</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== Aside ===== -->
+    <div class="aside">
+      <div class="card">
+        <h4>Як це працює</h4>
+        <ol class="how">
+          <li><span>1</span><div><b>Онлайн-оцінка</b><small>Оберіть модель і стан — побачите ціну</small></div></li>
+          <li><span>2</span><div><b>Спосіб продажу</b><small>Відділення або Нова пошта</small></div></li>
+          <li><span>3</span><div><b>Діагностика</b><small>Перевіряємо стан, фіксуємо ціну</small></div></li>
+          <li><span>4</span><div><b>Отримуєте гроші</b><small>Готівкою або на картку</small></div></li>
+        </ol>
+      </div>
+      <div class="trust">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span><b>Офіційно</b><small>Договір і квитанція на кожну угоду</small></span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>Швидко</b><small>Оцінка онлайн за 1 хвилину</small></span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7L9 18l-5-5"/></svg><span><b>Чесно</b><small>Ціна не змінюється, якщо стан відповідає</small></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a class="chat" href="#" aria-label="Чат"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.4 1.3 4.5 3.4 6L4.5 21l4.3-2.3c1 .2 2.1.3 3.2.3 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/><circle cx="8" cy="11" r="1.3" fill="#c40000"/><circle cx="12" cy="11" r="1.3" fill="#c40000"/><circle cx="16" cy="11" r="1.3" fill="#c40000"/></svg></a>
+
+<script>
+const IC = {
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>',
+  laptop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg>',
+  tablet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>',
+  tv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>',
+  console:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10a5 5 0 0 1 4.6 7l-1 2.5a2.3 2.3 0 0 1-3.8.6L14.5 15h-5l-2.3 2.1a2.3 2.3 0 0 1-3.8-.6l-1-2.5A5 5 0 0 1 7 7z"/><path d="M7 10v3M5.5 11.5h3M16 11h.01M18 12.5h.01"/></svg>',
+  photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>'
+};
+const DB = {
+  phone:{name:'Смартфон', label:"Пам'ять", brands:{
+    "Apple": {"iPhone 11":[8500,{"64 ГБ":1,"128 ГБ":1.1,"256 ГБ":1.2}],"iPhone 12":[11000,{"64 ГБ":1,"128 ГБ":1.1,"256 ГБ":1.2}],"iPhone 13":[14500,{"128 ГБ":1,"256 ГБ":1.12,"512 ГБ":1.25}],"iPhone 14":[18000,{"128 ГБ":1,"256 ГБ":1.1,"512 ГБ":1.2}],"iPhone 15":[23500,{"128 ГБ":1,"256 ГБ":1.1,"512 ГБ":1.2}]},
+    "Samsung": {"Galaxy S22":[8500,{"128 ГБ":1,"256 ГБ":1.1}],"Galaxy S23":[12500,{"128 ГБ":1,"256 ГБ":1.1,"512 ГБ":1.2}],"Galaxy A54":[5000,{"128 ГБ":1,"256 ГБ":1.1}]},
+    "Xiaomi": {"Redmi Note 13":[3800,{"128 ГБ":1,"256 ГБ":1.1}],"Xiaomi 13":[9000,{"256 ГБ":1,"512 ГБ":1.1}]}}},
+  laptop:{name:'Ноутбук', label:'Конфігурація', brands:{
+    "Apple": {"MacBook Air M1":[17000,{"8 / 256 ГБ":1,"16 / 512 ГБ":1.2}],"MacBook Air M2":[24000,{"8 / 256 ГБ":1,"16 / 512 ГБ":1.2}],"MacBook Pro 14 M1 Pro":[38000,{"16 / 512 ГБ":1,"32 / 1 ТБ":1.2}]},
+    "Lenovo": {"IdeaPad 5":[9500,{"8 / 256 ГБ":1,"16 / 512 ГБ":1.15}],"Legion 5":[21000,{"16 / 512 ГБ":1,"32 / 1 ТБ":1.15}]},
+    "ASUS": {"VivoBook 15":[7500,{"8 / 256 ГБ":1,"16 / 512 ГБ":1.15}],"ROG Strix G15":[24000,{"16 / 512 ГБ":1,"32 / 1 ТБ":1.15}]}}},
+  tablet:{name:'Планшет', label:"Пам'ять", brands:{
+    "Apple": {"iPad 9":[6500,{"64 ГБ":1,"256 ГБ":1.15}],"iPad Air 5":[13500,{"64 ГБ":1,"256 ГБ":1.15}],"iPad Pro 11 (2021)":[20000,{"128 ГБ":1,"256 ГБ":1.1,"512 ГБ":1.2}]},
+    "Samsung": {"Galaxy Tab S8":[11000,{"128 ГБ":1,"256 ГБ":1.1}],"Galaxy Tab A8":[3500,{"32 ГБ":1,"64 ГБ":1.1}]}}},
+  tv:{name:'Телевізор', label:'Діагональ', brands:{
+    "Samsung": {"Crystal UHD":[5000,{'43"':1,'50"':1.25,'55"':1.5,'65"':2}],"QLED Q60":[8000,{'50"':1,'55"':1.2,'65"':1.6}]},
+    "LG": {"UHD UR78":[4800,{'43"':1,'50"':1.25,'55"':1.5}],"OLED C2":[18000,{'55"':1,'65"':1.4}]}}},
+  console:{name:'Ігрова консоль', label:'Комплектація', brands:{
+    "Sony": {"PlayStation 5":[13500,{"1 геймпад":1,"2 геймпади":1.08}],"PlayStation 4 Pro":[6500,{"1 геймпад":1,"2 геймпади":1.1}]},
+    "Microsoft": {"Xbox Series X":[12500,{"1 геймпад":1,"2 геймпади":1.08}],"Xbox Series S":[7000,{"1 геймпад":1,"2 геймпади":1.1}]},
+    "Nintendo": {"Switch OLED":[7500,{"Стандарт":1,"З іграми":1.1}]}}},
+  photo:{name:'Фототехніка', label:'Комплектація', brands:{
+    "Canon": {"EOS 250D":[9000,{"Тушка":1,"З об'єктивом kit":1.2}],"EOS R6":[45000,{"Тушка":1,"З об'єктивом kit":1.15}]},
+    "Sony": {"Alpha a6400":[17000,{"Тушка":1,"З об'єктивом kit":1.15}]},
+    "Nikon": {"D7500":[16000,{"Тушка":1,"З об'єктивом kit":1.15}]}}}
+};
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString('uk-UA').replace(/ /g,' ') + ' ₴';
+// TODO: замінити на gtag('event', e, p) після підключення GA4
+const log = (e, p={}) => { (window.dataLayer = window.dataLayer || []).push({event:e, ...p}); };
+const st = { maxStep:1 };
+const STEP_OF = {step1:1, step2:2, office:2, post:2, step3:3, done:4};
+const TITLES = {};
+
+Object.entries(DB).forEach(([k,t]) => {
+  const b=document.createElement('button'); b.type='button'; b.className='t'; b.dataset.type=k;
+  b.innerHTML=IC[k]+'<span>'+t.name+'</span>'; $('types').appendChild(b);
+  b.onclick=()=>{
+    st.type=k; document.querySelectorAll('.t').forEach(x=>x.classList.toggle('on',x===b));
+    const br=$('brand'); br.length=1; $('model').length=1; $('mem').length=1;
+    Object.keys(t.brands).forEach(n=>br.add(new Option(n,n)));
+    $('memLabel').textContent=t.label;
+    setEnabled('brand',true); setEnabled('model',false); setEnabled('mem',false); check1();
+    log('select_type',{type:k});
+  };
+});
+const cur = () => DB[st.type].brands;
+function setEnabled(id, on){ $(id).disabled=!on; $('f-'+id).classList.toggle('disabled',!on); }
+function check1(){ $('calc').disabled = !(st.type && $('brand').value && $('model').value && $('mem').value && $('cond').value); }
+
+$('brand').onchange = () => {
+  const m=$('model'); m.length=1; $('mem').length=1;
+  if($('brand').value) Object.keys(cur()[$('brand').value]).forEach(k=>m.add(new Option(k,k)));
+  setEnabled('model', !!$('brand').value); setEnabled('mem', false); check1();
+};
+$('model').onchange = () => {
+  const s=$('mem'); s.length=1;
+  if($('model').value) Object.keys(cur()[$('brand').value][$('model').value][1]).forEach(k=>s.add(new Option(k,k)));
+  setEnabled('mem', !!$('model').value); check1();
+};
+$('mem').onchange = check1; $('cond').onchange = check1;
+
+$('photos').onchange = e => {
+  const t=$('thumbs'); t.innerHTML='';
+  [...e.target.files].slice(0,4).forEach(f=>{ const i=new Image(); i.src=URL.createObjectURL(f); t.appendChild(i); });
+  st.photos = Math.min(e.target.files.length,4); log('photo_uploaded',{count:st.photos});
+};
+
+/* навигация */
+let current = 'step1';
+function go(id){
+  current = id;
+  ['step1','step2','office','post','step3','done'].forEach(s=>$(s).classList.toggle('hidden', s!==id));
+  const n = STEP_OF[id]; st.maxStep = Math.max(st.maxStep, n);
+  document.querySelectorAll('#steps button').forEach(b=>{
+    const k=+b.dataset.s;
+    b.classList.toggle('on', k===n);
+    b.classList.toggle('done', k<n || (k<=st.maxStep && k!==n && id!=='done'));
+  });
+  const t = TITLES[id] || ['Продайте техніку вигідно','Онлайн-оцінка за 1 хвилину · у відділенні або Новою поштою'];
+  $('title').textContent=t[0]; $('subtitle').textContent=t[1];
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('#steps button').forEach(b=>b.onclick=()=>{
+  const k=+b.dataset.s;
+  if(!b.classList.contains('done') || current==='done') return;
+  go(k===1?'step1':k===2?(st.method||'step2'):'step3');
+});
+document.addEventListener('click', e=>{
+  const a=e.target.closest('[data-to]'); if(!a) return;
+  e.preventDefault();
+  if(a.dataset.to==='office' && current==='post') log('post_to_office');
+  if(a.dataset.to==='office'||a.dataset.to==='post') st.method=a.dataset.to;
+  if(a.dataset.to==='step2') st.method=null;
+  go(a.dataset.to);
+});
+
+$('calc').onclick = () => {
+  const [base, mems] = cur()[$('brand').value][$('model').value];
+  const v = Math.round(base * mems[$('mem').value] * +$('cond').value / 50) * 50;
+  const d = new Date(Date.now()+7*864e5);
+  Object.assign(st,{model:$('model').value, mem:$('mem').selectedOptions[0].text, cond:$('cond').selectedOptions[0].text.split(' —')[0], price:v, until:d.toLocaleDateString('uk-UA')});
+  $('devName').textContent = `${st.model} · ${st.mem}`;
+  $('pMain').textContent = fmt(v);
+  $('pRange').textContent = `${fmt(Math.round(v*.9/50)*50).replace(' ₴','')}–${fmt(v)}`;
+  $('pDate').textContent = st.until;
+  document.querySelectorAll('.mp-price').forEach(e=>e.textContent=fmt(v));
+  document.querySelectorAll('.mp-dev').forEach(e=>e.textContent=`${st.model} · ${st.mem} · ${st.cond} · дійсна до ${st.until}`);
+  log('calc_price',{type:st.type,model:st.model,mem:st.mem,cond:st.cond,price:v});
+  go('step2');
+};
+
+$('m-office').onclick = () => { st.method='office'; log('open_method_office'); go('office'); };
+$('m-post').onclick   = () => { st.method='post';   log('open_method_post');   go('post'); };
+document.querySelectorAll('.faq details').forEach(d=>d.addEventListener('toggle',()=>{ if(d.open) log('post_faq_open',{q:d.querySelector('summary').textContent}); }));
+
+document.querySelectorAll('[data-method]').forEach(b=>b.onclick=()=>{
+  st.method=b.dataset.method;
+  $('s3sub').textContent = st.method==='post' ? 'Ми повідомимо вас про запуск і збережемо оцінку' : 'Менеджер зв\'яжеться з вами, щоб підтвердити візит';
+  $('submit').textContent = st.method==='post' ? 'Залишити заявку' : 'Записатися у відділення';
+  go('step3');
+});
+$('back3').onclick = () => go(st.method);
+
+function check3(){ $('submit').disabled = !($('name').value.trim() && $('phone').value.replace(/\D/g,'').length>=10 && $('agree').checked); }
+['name','phone'].forEach(i=>$(i).oninput=check3); $('agree').onchange=check3;
+
+$('submit').onclick = () => {
+  const post = st.method==='post';
+  const where = post ? `${$('pCity').value}, ${$('pNp').value}` : `${$('oCity').value}, ${$('oBranch').value}`;
+  $('dTitle').textContent = post ? 'Ви в листі очікування!' : 'Заявку прийнято!';
+  $('dText').textContent = post
+    ? 'Щойно сервіс відправки Новою поштою запрацює, ми надішлемо SMS. Якщо не хочете чекати — продайте техніку в найближчому відділенні вже сьогодні.'
+    : 'Чекаємо вас у відділенні. Візьміть паспорт або ID-картку та саму техніку.';
+  $('dSum').innerHTML = `
+    <small>Пристрій</small><b>${st.model} · ${st.mem}</b>
+    <small>Стан</small><b>${st.cond}</b>
+    <small>Попередня ціна</small><b>${fmt(st.price)}</b>
+    <small>${post?'Нова пошта':'Відділення'}</small><b>${where}</b>
+    <small>Оцінка дійсна до</small><b>${st.until}</b>
+    <small>Статус</small><b><span class="badge ${post?'amber':''}">${post?'Очікує запуску':'Активна'}</span></b>`;
+  $('toOffice').classList.toggle('hidden', !post);
+  log('submit_lead',{type:st.type,method:st.method,price:st.price,city:post?$('pCity').value:$('oCity').value,photos:st.photos||0,utm_source:new URLSearchParams(location.search).get('utm_source')||'(direct)'});
+  go('done');
+};
+$('toOffice').onclick = () => { log('post_to_office',{from:'done'}); st.method='office'; go('office'); };
+$('again').onclick = () => location.reload();
+
+</script>
+</body>
+</html>

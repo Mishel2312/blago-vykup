@@ -408,12 +408,12 @@ a{color:inherit}
 
         <div class="h3">Залишити заявку</div>
         <div class="fields">
-          <div class="f"><label for="pCity">Ваше місто <em>*</em></label>
-            <select class="sel" id="pCity"><option>Київ</option><option>Біла Церква</option><option>Житомир</option><option>Полтава</option><option>Черкаси</option><option>Інше місто</option></select></div>
-          <div class="f"><label for="pNp">Відділення «Нова пошта»</label>
-            <select class="sel" id="pNp"><option>Відділення №1</option><option>Відділення №12</option><option>Поштомат №3045</option></select></div>
+          <div class="f"><label for="pName">ПІБ <em>*</em></label><input class="inp" id="pName" placeholder="Прізвище, ім'я, по батькові" autocomplete="name"></div>
+          <div class="f"><label for="pPhone">Телефон <em>*</em></label><input class="inp" id="pPhone" placeholder="+380 __ ___ __ __" inputmode="tel" autocomplete="tel"></div>
         </div>
-        <button class="btn mt" data-method="post">Залишити заявку</button>
+        <p class="hint">Ми надішлемо SMS у день запуску сервісу разом з інструкцією та ТТН для відправки.</p>
+        <label class="check"><input type="checkbox" id="pAgree"> Погоджуюсь з умовами обробки персональних даних та правилами сервісу</label>
+        <button class="btn mt" id="pSubmit" disabled>Залишити заявку</button>
         <p class="hint" style="text-align:center">Не хочете чекати? <a href="#" data-to="office">Продайте у відділенні вже сьогодні</a></p>
       </section>
 
@@ -599,9 +599,14 @@ $('back3').onclick = () => go(st.method);
 function check3(){ $('submit').disabled = !($('name').value.trim() && $('phone').value.replace(/\D/g,'').length>=10 && $('agree').checked); }
 ['name','phone'].forEach(i=>$(i).oninput=check3); $('agree').onchange=check3;
 
-$('submit').onclick = () => {
+function checkPost(){ $('pSubmit').disabled = !($('pName').value.trim() && $('pPhone').value.replace(/\D/g,'').length>=10 && $('pAgree').checked); }
+['pName','pPhone'].forEach(i=>$(i).oninput=checkPost); $('pAgree').onchange=checkPost;
+$('pSubmit').onclick = () => { st.method='post'; finish(); };
+
+$('submit').onclick = () => finish();
+function finish(){
   const post = st.method==='post';
-  const where = post ? `${$('pCity').value}, ${$('pNp').value}` : `${$('oCity').value}, ${$('oBranch').value}`;
+  const where = post ? `${$('pName').value.trim()}, ${$('pPhone').value.trim()}` : `${$('oCity').value}, ${$('oBranch').value}`;
   $('dTitle').textContent = post ? 'Ви в листі очікування!' : 'Заявку прийнято!';
   $('dText').textContent = post
     ? 'Щойно сервіс відправки Новою поштою запрацює, ми надішлемо SMS. Якщо не хочете чекати — продайте техніку в найближчому відділенні вже сьогодні.'
@@ -610,13 +615,13 @@ $('submit').onclick = () => {
     <small>Пристрій</small><b>${st.model} · ${st.mem}</b>
     <small>Стан</small><b>${st.cond}</b>
     <small>Попередня ціна</small><b>${fmt(st.price)}</b>
-    <small>${post?'Нова пошта':'Відділення'}</small><b>${where}</b>
+    <small>${post?'Контакт':'Відділення'}</small><b>${where}</b>
     <small>Оцінка дійсна до</small><b>${st.until}</b>
     <small>Статус</small><b><span class="badge ${post?'amber':''}">${post?'Очікує запуску':'Активна'}</span></b>`;
   $('toOffice').classList.toggle('hidden', !post);
-  log('submit_lead',{type:st.type,method:st.method,price:st.price,city:post?$('pCity').value:$('oCity').value,photos:st.photos||0,utm_source:new URLSearchParams(location.search).get('utm_source')||'(direct)'});
+  log('submit_lead',{type:st.type,method:st.method,price:st.price,city:post?null:$('oCity').value,photos:st.photos||0,utm_source:new URLSearchParams(location.search).get('utm_source')||'(direct)'});
   go('done');
-};
+}
 $('toOffice').onclick = () => { log('post_to_office',{from:'done'}); st.method='office'; go('office'); };
 $('again').onclick = () => location.reload();
 
